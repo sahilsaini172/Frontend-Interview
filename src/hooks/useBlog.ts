@@ -2,14 +2,18 @@ import { useQuery } from "@tanstack/react-query";
 import { api, type Blog } from "../api/blogApi";
 
 export const getBlogById = async (id: string): Promise<Blog> => {
-  const res = await api.get(`/blogs/${id}`);
-  return res.data;
+  const {data} = await api.get<Blog>(`/blogs/${id}`);
+  return data;
 };
 
-export const useBlog = (id: string) => {
+export const useBlog = (id: string | null) => {
   return useQuery<Blog, Error>({
     queryKey: ["blog", id],
-    queryFn: () => getBlogById(id),
-    enabled: !!id,
+    queryFn: () => {
+      if (!id) throw new Error('Blog Id is Required');
+      return getBlogById(id)
+    },
+    enabled: Boolean(id),
+    staleTime: 1000*60,
   });
 };

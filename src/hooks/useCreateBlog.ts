@@ -1,16 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { api, type Blog } from "../api/blogApi";
 
-export const useCreateBlog = () => {
-  const qc = useQueryClient();
+type CreateBlogInput = Omit<Blog,'id'>;
 
-  return useMutation<Blog, Error, Omit<Blog, "id">>({
+export const useCreateBlog = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<Blog, Error, CreateBlogInput>({
     mutationFn: async (data) => {
-      const res = await api.post("/blogs", data);
-      return res.data;
+      const {data:created} = await api.post<Blog>("/blogs", data);
+      return created;
     },
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["blogs"] });
+      queryClient.invalidateQueries({ queryKey: ["blogs"] });
     },
   });
 };
