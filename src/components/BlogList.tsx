@@ -12,6 +12,7 @@ import CreateBlog from "./CreateBlog";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogContent, DialogTrigger } from "./ui/dialog";
 import { useNavigate } from "react-router-dom";
+import BlogListSkeleton from "./skeletons/BlogListSkeleton";
 
 type Props = {
   onSelect: (id: string) => void;
@@ -22,8 +23,7 @@ const BlogList = ({ onSelect, isLaptop }: Props) => {
   const { data, isLoading, error } = useBlogs();
   const navigate = useNavigate();
 
-  if (isLoading)
-    return <p className="text-sm text-muted-foreground">Loading...</p>;
+  if (isLoading) return <BlogListSkeleton />;
   if (error)
     return <p className="test-sm text-destructive">Error loading blogs</p>;
   if (!data || data.length === 0)

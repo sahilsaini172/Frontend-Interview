@@ -1,4 +1,5 @@
 import { useBlog } from "../hooks/useBlog";
+import { BlogDetailSkeleton } from "./skeletons/BlogDetailSkeleton";
 import { Badge } from "./ui/badge";
 
 type Props = {
@@ -8,8 +9,7 @@ type Props = {
 export default function BlogDetail({ id }: Props) {
   const { data, isLoading, error } = useBlog(id!);
 
-  if (isLoading)
-    return <p className="text-sm text-muted-foreground">Loading blog...</p>;
+  if (isLoading) return <BlogDetailSkeleton />;
   if (error)
     return <p className="text-sm text-destructive">Error loading blog</p>;
   if (!data) return null;

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useBlog } from "../hooks/useBlog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
+import { BlogDetailSkeleton } from "@/components/skeletons/BlogDetailSkeleton";
 
 export default function BlogDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +11,7 @@ export default function BlogDetailPage() {
   const navigate = useNavigate();
 
   if (isLoading) {
-    return <p className="p-4 text-sm text-muted-foreground">Loading blog...</p>;
+    return <BlogDetailSkeleton />;
   }
 
   if (error) {
